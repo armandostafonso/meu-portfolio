@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/portfolio/main {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      allow get: if isOwner();
+      allow create, update: if isOwner()
+        && request.resource.data.keys().hasAll(['projects', 'revision', 'updatedAt', 'schemaVersion'])
+        && request.resource.data.keys().hasOnly(['projects', 'revision', 'updatedAt', 'schemaVersion'])
+        && request.resource.data.projects is list
+        && request.resource.data.projects.size() <= 200
+        && request.resource.data.revision is int
+        && request.resource.data.revision > 0
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.schemaVersion == 1;
+    }
+  }
+}
