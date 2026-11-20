@@ -1,4 +1,4 @@
-const CACHE = 'portfolio-v1-2';
+const CACHE = 'portfolio-v1-3';
 const FILES = ['./', './index.html', './firebase-config.js', './firebase-sync.js',
   './portfolio-merge.js', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 const ASSETS = new Set(FILES.map(file => new URL(file, self.registration.scope).href));
